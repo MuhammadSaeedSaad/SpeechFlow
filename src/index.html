@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSA</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body>
+    <h1 class="header">Computer Stuttering Analysis</h1>
+    <input type="file" id="csvFileInput" accept=".csv" class="styled-button" />
+
+    <div class="centered-div">
+      <table>
+        <thead>
+          <tr>
+            <th>Property</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Number of Ds</td>
+            <td id="dNum">--</td>
+          </tr>
+          <tr>
+            <td>Number of Fs</td>
+            <td id="fNum">--</td>
+          </tr>
+          <tr>
+            <td>Percentage of Ds %</td>
+            <td id="dRatio">--</td>
+          </tr>
+          <tr>
+            <td>Percentage of Fs %</td>
+            <td id="fRatio">--</td>
+          </tr>
+          <tr>
+            <td>Mean of 3 Maximum Ds</td>
+            <td id="dAvgTime">--</td>
+          </tr>
+          <tr>
+            <td>Mean of 3 Maximum Fs</td>
+            <td id="fAvgTime">--</td>
+          </tr>
+          <tr>
+            <td>Recording Length</td>
+            <td id="recordingLength">--</td>
+          </tr>
+          <tr>
+            <td>Number of fluent syllabes per minute</td>
+            <td id="fSylMins">--</td>
+          </tr>
+          <tr>
+            <td>Number of dysfluent syllabes per minute</td>
+            <td id="dSylMins">--</td>
+          </tr>
+          <tr>
+            <td>Number of syllabes per minute</td>
+            <td id="sylMins">--</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="canvas-div">
+        <canvas id="myChart"></canvas>
+      </div>
+
+      <!-- <div class="canvas-div">
+            <canvas id="myChart1"></canvas>
+        </div> -->
+    </div>
+
+    <script src="js/chart.umd.js"></script>
+    <script src="js/chart.min.js" type="module"></script>
+    <script src="js/math.min.js"></script>
+    <script src="js/script.js"></script>
+  </body>
+</html>
