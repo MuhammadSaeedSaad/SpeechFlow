@@ -10,9 +10,12 @@ let fRatioCell = document.getElementById("fRatio");
 let dAvgTime = document.getElementById("dAvgTime");
 let fAvgTime = document.getElementById("fAvgTime");
 let recodringLenth = document.getElementById("recordingLength");
-let sylMins = document.getElementById("sylMins");
-let fSylMins = document.getElementById("fSylMins");
-let dSylMin = document.getElementById("dSylMins");
+let sylPerMins = document.getElementById("sylMins");
+let fSylPerMins = document.getElementById("fSylMins");
+let dSylPerMin = document.getElementById("dSylMins");
+let inefficientSpeechScoreHtml = document.getElementById("inefficientSpeechScore");
+let efficientSpeechScoreHtml = document.getElementById("efficientSpeechScore");
+let meanStutteringDurationHtml = document.getElementById("meanStutteringDuration");
 
 function handleFileSelect(event) {
   const file = event.target.files[0];
@@ -23,13 +26,45 @@ function handleFileSelect(event) {
     reader.onload = function (event) {
       const contents = event.target.result;
       dataArray = parseCSV(contents);
-      // console.log(dataArray)
-      let recodringLength = dataArray[dataArray.length - 1][0] - dataArray[0][0];
-      let numberOfSylablesPerMinute = (dataArray.length / recodringLength) * 30;
+      console.log(dataArray)
+      // fix typos in var identifires
+      // let recodringLength = dataArray[dataArray.length - 1][0] - dataArray[0][0];
+      let recordingLength = 0;
+      for (let i = 0; i < dataArray.length; i+=2) {
+        let syllableDuartion = dataArray[i+1][0] - dataArray[i][0];
+        recordingLength += syllableDuartion;
+      }
+      console.log(recordingLength);
+
+      let fSyllablesDuration = 0;
+      let dSyllablesDuration = 0;
+      // the following 2 variables are repeates .. fix by using dsAndFs array
+      let fSyllablesNumber = 0, dSyllablesNumber = 0;
+      for (let i = 0; i < dataArray.length; i+=2) {
+        let syllableDuartion = dataArray[i+1][0] - dataArray[i][0];
+        if (dataArray[i][1] == 'F') {
+          fSyllablesNumber ;
+          fSyllablesDuration += syllableDuartion;
+        }
+        else {
+          dSyllablesNumber++;
+          dSyllablesDuration += syllableDuartion;
+        }
+      }
+
+      let inefficientSpeechScore, efficientSpeechScore;
+      inefficientSpeechScore = (dSyllablesDuration / recordingLength) * 100;
+      efficientSpeechScore = (fSyllablesDuration / recordingLength) * 100;
+
+      console.log('000000000000000000000000000000')
+      console.log(dSyllablesDuration, dSyllablesNumber)
+      let meanStutteringDuration = dSyllablesDuration / dSyllablesNumber;
+      
+      let numberOfSylablesPerMinute = (dataArray.length / recordingLength) * 30;
       numberOfSylablesPerMinute = Math.round(numberOfSylablesPerMinute * 100) / 100;
       dsAndFs = splitDsFs(dataArray);
-      let numberOfFSylablesPerMinute = ((dsAndFs.Fs.labels.length * 2)/ recodringLength) * 30;
-      let numberOfDSylablesPerMinute = ((dsAndFs.Ds.labels.length * 2)/ recodringLength) * 30;
+      let numberOfFSylablesPerMinute = ((dsAndFs.Fs.labels.length * 2)/ recordingLength) * 30;
+      let numberOfDSylablesPerMinute = ((dsAndFs.Ds.labels.length * 2)/ recordingLength) * 30;
 
       // Do something with the dataArray (e.g., display it, manipulate it, etc.)
       dataPlot = new Chart(ctx, {
@@ -105,10 +140,15 @@ function handleFileSelect(event) {
       fRatioCell.innerText = numsAndRatios.fRatio + " %";
       dAvgTime.innerText = Math.round(numsAndRatios.dAvgTime*100)/100;
       fAvgTime.innerText = Math.round(numsAndRatios.fAvgTime*100)/100;
-      recodringLenth.innerText = Math.round(recodringLength*100)/100;
-      sylMins.innerText = Math.round(numberOfSylablesPerMinute*100)/100;
-      fSylMins.innerText = Math.round(numberOfFSylablesPerMinute*100)/100;
-      dSylMin.innerText = Math.round(numberOfDSylablesPerMinute*100)/100
+      recodringLenth.innerText = Math.round(recordingLength*100)/100;
+      sylPerMins.innerText = Math.round(numberOfSylablesPerMinute*100)/100;
+      fSylPerMins.innerText = Math.round(numberOfFSylablesPerMinute*100)/100;
+      dSylPerMin.innerText = Math.round(numberOfDSylablesPerMinute*100)/100;
+      console.log(inefficientSpeechScore, efficientSpeechScore)
+      inefficientSpeechScoreHtml.innerText = (Math.round(inefficientSpeechScore*100)/100) + ' %';
+      efficientSpeechScoreHtml.innerText = (Math.round(efficientSpeechScore*100)/100) + ' %';
+      console.log(meanStutteringDuration)
+      meanStutteringDurationHtml.innerText = Math.round(meanStutteringDuration*100)/100;
     };
 
 
@@ -138,6 +178,7 @@ function splitDsFs(dataArray) {
     if (i !== dataArray.length - 1) {
       if (dataArray[i][1] == "D") {
         //  Ds.data.push(dataArray[i + 1][0] - dataArray[i][0]);
+        // why we are rounding them
         Ds.data.push(Math.round((dataArray[i + 1][0] - dataArray[i][0]) * 100) / 100);
         Ds.labels.push(dataArray[i][1]);
       }
