@@ -6,11 +6,10 @@
     <title>Computer based stuttering analysis (CBSA)</title>
     <link rel="stylesheet" href="css/style.css" />
   </head>
-
+  <h1>Computer Based Stuttering Analysis (CBSA)</h1>
   <body>
-    <input type="file" id="csvFileInput" accept=".csv" class="styled-button" />
-
-    <div class="centered-div">
+    <!-- <input type="file" id="csvFileInput" accept=".csv" class="styled-button" /> -->
+    <div class="main-box-div">
       <table>
         <thead>
           <tr>
@@ -28,23 +27,23 @@
             <td id="fNum">--</td>
           </tr>
           <tr>
-            <td>Percentage of Ds %</td>
+            <td>Percent. of Ds</td>
             <td id="dRatio">--</td>
           </tr>
           <tr>
-            <td>Percentage of Fs %</td>
+            <td>Percent. of Fs</td>
             <td id="fRatio">--</td>
           </tr>
           <tr>
-            <td>Mean of 3 Maximum Ds (m.s)</td>
+            <td>Mean of 3 Maximum Ds (s)</td>
             <td id="dAvgTime">--</td>
           </tr>
           <tr>
-            <td>Mean of 3 Maximum Fs (m.s)</td>
+            <td>Mean of 3 Maximum Fs (s)</td>
             <td id="fAvgTime">--</td>
           </tr>
           <tr>
-            <td>Recording Length (T, m.s)</td>
+            <td>Recording Length (T, s)</td>
             <td id="recordingLength">--</td>
           </tr>
           <tr>
@@ -60,21 +59,22 @@
             <td id="sylMins">--</td>
           </tr>
           <tr>
-            <td>% Inefficient speech score</td>
+            <td>Inefficient speech score %</td>
             <td id="inefficientSpeechScore">--</td>
           </tr>
           <tr>
-            <td>% Efficient speech score</td>
+            <td>Efficient speech score %</td>
             <td id="efficientSpeechScore">--</td>
           </tr>
           <tr>
-            <td>Mean stuttering duration (m.s)</td>
+            <td>Mean stuttering duration (s)</td>
             <td id="meanStutteringDuration">--</td>
           </tr
         </tbody>
       </table>
       <div class="canvas-div">
         <canvas id="myChart"></canvas>
+        <canvas id="myChart1"></canvas>
       </div>
 
       <!-- <div class="canvas-div">

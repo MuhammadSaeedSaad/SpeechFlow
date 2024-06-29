@@ -6,11 +6,11 @@ body {
     margin-bottom: 2vh;
 }
 
-.centered-div {
-    margin: 0 auto;
+.main-box-div {
+    margin: 10 auto;
     /* This will center the div horizontally */
-    width: 95vw;
-    height: 70vh;
+    /* width: 100vw;
+    height: 70vh; */
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -18,10 +18,11 @@ body {
 }
 
 .canvas-div {
-	height: 70vh;
-	width: 70vw;
+	/* height: 35vh;
+	width: 70vw; */
     margin: auto 3vw;
-	display: block;
+	display: flex;
+    flex-direction: column;
 }
 
 /* Style for the button */
@@ -52,10 +53,10 @@ body {
 }
 
 table {
-    width: 30vw;
-	height: 30vh;
+    /* width: 40vw;
+	height: 70vh; */
     margin: 1vh auto;
-	font-size: 12px;
+	font-size: 24px;
     border-collapse: collapse;
     border: 2px solid #4CAF50;
     background-color: #f2f2f2;
@@ -80,7 +81,12 @@ tbody tr:hover {
     background-color: #d1d1d1;
 }
 
-.mychart {
-	width: 45vw;
-	height: 70vh;
+#myChart {
+	width: 900px;
+	height: 450px;
+}
+
+#myChart1 {
+	width: 900px;
+	height: 450px;
 }

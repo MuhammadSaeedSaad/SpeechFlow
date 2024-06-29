@@ -1,5 +1,6 @@
-const { app, BrowserWindow, Menu, ipcMain } = require('electron');
+const { app, BrowserWindow, Menu, dialog, ipcMain } = require('electron');
 const path = require('node:path');
+const fs = require('fs');
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -22,6 +23,38 @@ const createWindow = () => {
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
+
+  const menu = Menu.buildFromTemplate([
+    {
+      label: 'File',
+      submenu: [
+        {
+          label: 'Open File',
+          click() {
+            dialog.showOpenDialog({
+              properties: ['openFile']
+            }).then(result => {
+              if (!result.canceled) {
+                const filePath = result.filePaths[0];
+                fs.readFile(filePath, 'utf-8', (err, data) => {
+                  if (err) {
+                    console.error('Error reading file:', err);
+                    return;
+                  }
+                  mainWindow.webContents.send('file-opened', { filePath, data });
+                });
+              }
+            }).catch(err => {
+              console.error('Error opening file dialog:', err);
+            });
+          }
+        },
+        { role: 'quit' }
+      ]
+    }
+  ]);
+
+  Menu.setApplicationMenu(menu);
 };
 
 // This method will be called when Electron has finished
