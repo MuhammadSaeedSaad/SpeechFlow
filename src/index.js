@@ -29,20 +29,22 @@ const createWindow = () => {
       label: 'File',
       submenu: [
         {
-          label: 'Open File',
+          label: 'Open',
           click() {
             dialog.showOpenDialog({
-              properties: ['openFile']
+              properties: ['openFile', 'multiSelections']
             }).then(result => {
+              console.log(result)
               if (!result.canceled) {
-                const filePath = result.filePaths[0];
-                fs.readFile(filePath, 'utf-8', (err, data) => {
-                  if (err) {
-                    console.error('Error reading file:', err);
-                    return;
-                  }
-                  mainWindow.webContents.send('file-opened', { filePath, data });
-                });
+                result.filePaths.map(filePath =>
+                  fs.readFile(filePath, 'utf-8', (err, data) => {
+                    if (err) {
+                      console.error('Error reading file:', err);
+                      return;
+                    }
+                    mainWindow.webContents.send('file-opened', { filePath, data });
+                  })
+                );
               }
             }).catch(err => {
               console.error('Error opening file dialog:', err);
