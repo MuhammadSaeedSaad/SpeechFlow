@@ -11,6 +11,18 @@
     <!-- <input type="file" id="csvFileInput" accept=".csv" class="styled-button" /> -->
     <div class="main-box-div">
       <table>
+        <thead id="tableFirstHeader">
+          <!-- <tr>
+            <th>Meta Data</th>
+            <th>Value</th>
+          </tr> -->
+        </thead>
+        <tbody>
+          <tr>
+            <td>File name</td>
+            <td id="fileName">--</td>
+          </tr>
+        </tbody>
         <thead>
           <tr>
             <th>Property</th>
@@ -69,7 +81,7 @@
           <tr>
             <td>Mean stuttering duration (s)</td>
             <td id="meanStutteringDuration">--</td>
-          </tr
+          </tr>
         </tbody>
       </table>
       <div class="canvas-div">

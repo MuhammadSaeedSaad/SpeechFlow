@@ -3,6 +3,7 @@
 let dataPlot, dataPlot1, dataArray, dsAndFs;
 const ctx = document.getElementById('myChart');
 const ctx1 = document.getElementById('myChart1');
+let fileNameCell = document.getElementById("fileName");
 let dNumCell = document.getElementById("dNum");
 let fNumCell = document.getElementById("fNum");
 let dRatioCell = document.getElementById("dRatio");
@@ -20,7 +21,9 @@ let meanStutteringDurationHtml = document.getElementById("meanStutteringDuration
 window.electron.onFileOpened(handleFileSelect);
 
 function handleFileSelect(event, { filePath, data }) {
-  console.log(data);
+  
+  const fileName = filePath.split('\\').pop();
+  console.log(fileName);
   dataArray = parseCSV(data);
   console.log(dataArray)
   // fix typos in var identifires
@@ -62,7 +65,7 @@ function handleFileSelect(event, { filePath, data }) {
   let numberOfFSylablesPerMinute = ((dsAndFs.Fs.labels.length * 2) / recordingLength) * 30;
   let numberOfDSylablesPerMinute = ((dsAndFs.Ds.labels.length * 2) / recordingLength) * 30;
 
-  Chart.defaults.font.size = 20;
+  Chart.defaults.font.size = 15;
   // Do something with the dataArray (e.g., display it, manipulate it, etc.)
   dataPlot = new Chart(ctx, {
     type: 'bar',
@@ -90,9 +93,10 @@ function handleFileSelect(event, { filePath, data }) {
       },
       legend: {
         labels: {
+          display: true,
           // This more specific font property overrides the global property
           font: {
-            size: 50,
+            size: 40,
           }
         }
       },
@@ -170,168 +174,169 @@ function handleFileSelect(event, { filePath, data }) {
   efficientSpeechScoreHtml.innerText = (Math.round(efficientSpeechScore * 100) / 100) + ' %';
   console.log(meanStutteringDuration)
   meanStutteringDurationHtml.innerText = Math.round(meanStutteringDuration * 100) / 100;
+  fileNameCell.innerText = fileName;
 }
 
-function handleFileSelectOld(event) {
-  const file = event.target.files[0];
+// function handleFileSelectOld(event) {
+//   const file = event.target.files[0];
 
-  if (file) {
-    const reader = new FileReader();
+//   if (file) {
+//     const reader = new FileReader();
 
-    reader.onload = function (event) {
-      const contents = event.target.result;
-      dataArray = parseCSV(contents);
-      console.log(dataArray)
-      // fix typos in var identifires
-      // let recodringLength = dataArray[dataArray.length - 1][0] - dataArray[0][0];
-      let recordingLength = 0;
-      for (let i = 0; i < dataArray.length; i += 2) {
-        let syllableDuartion = dataArray[i + 1][0] - dataArray[i][0];
-        recordingLength += syllableDuartion;
-      }
-      console.log(recordingLength);
+//     reader.onload = function (event) {
+//       const contents = event.target.result;
+//       dataArray = parseCSV(contents);
+//       console.log(dataArray)
+//       // fix typos in var identifires
+//       // let recodringLength = dataArray[dataArray.length - 1][0] - dataArray[0][0];
+//       let recordingLength = 0;
+//       for (let i = 0; i < dataArray.length; i += 2) {
+//         let syllableDuartion = dataArray[i + 1][0] - dataArray[i][0];
+//         recordingLength += syllableDuartion;
+//       }
+//       console.log(recordingLength);
 
-      let fSyllablesDuration = 0;
-      let dSyllablesDuration = 0;
-      // the following 2 variables are repeates .. fix by using dsAndFs array
-      let fSyllablesNumber = 0, dSyllablesNumber = 0;
-      for (let i = 0; i < dataArray.length; i += 2) {
-        let syllableDuartion = dataArray[i + 1][0] - dataArray[i][0];
-        if (dataArray[i][1] == 'F') {
-          fSyllablesNumber;
-          fSyllablesDuration += syllableDuartion;
-        }
-        else {
-          dSyllablesNumber++;
-          dSyllablesDuration += syllableDuartion;
-        }
-      }
+//       let fSyllablesDuration = 0;
+//       let dSyllablesDuration = 0;
+//       // the following 2 variables are repeates .. fix by using dsAndFs array
+//       let fSyllablesNumber = 0, dSyllablesNumber = 0;
+//       for (let i = 0; i < dataArray.length; i += 2) {
+//         let syllableDuartion = dataArray[i + 1][0] - dataArray[i][0];
+//         if (dataArray[i][1] == 'F') {
+//           fSyllablesNumber;
+//           fSyllablesDuration += syllableDuartion;
+//         }
+//         else {
+//           dSyllablesNumber++;
+//           dSyllablesDuration += syllableDuartion;
+//         }
+//       }
 
-      let inefficientSpeechScore, efficientSpeechScore;
-      inefficientSpeechScore = (dSyllablesDuration / recordingLength) * 100;
-      efficientSpeechScore = (fSyllablesDuration / recordingLength) * 100;
+//       let inefficientSpeechScore, efficientSpeechScore;
+//       inefficientSpeechScore = (dSyllablesDuration / recordingLength) * 100;
+//       efficientSpeechScore = (fSyllablesDuration / recordingLength) * 100;
 
-      console.log('000000000000000000000000000000')
-      console.log(dSyllablesDuration, dSyllablesNumber)
-      let meanStutteringDuration = dSyllablesDuration / dSyllablesNumber;
+//       console.log('000000000000000000000000000000')
+//       console.log(dSyllablesDuration, dSyllablesNumber)
+//       let meanStutteringDuration = dSyllablesDuration / dSyllablesNumber;
 
-      let numberOfSylablesPerMinute = (dataArray.length / recordingLength) * 30;
-      numberOfSylablesPerMinute = Math.round(numberOfSylablesPerMinute * 100) / 100;
-      dsAndFs = splitDsFs(dataArray);
-      let numberOfFSylablesPerMinute = ((dsAndFs.Fs.labels.length * 2) / recordingLength) * 30;
-      let numberOfDSylablesPerMinute = ((dsAndFs.Ds.labels.length * 2) / recordingLength) * 30;
+//       let numberOfSylablesPerMinute = (dataArray.length / recordingLength) * 30;
+//       numberOfSylablesPerMinute = Math.round(numberOfSylablesPerMinute * 100) / 100;
+//       dsAndFs = splitDsFs(dataArray);
+//       let numberOfFSylablesPerMinute = ((dsAndFs.Fs.labels.length * 2) / recordingLength) * 30;
+//       let numberOfDSylablesPerMinute = ((dsAndFs.Ds.labels.length * 2) / recordingLength) * 30;
 
-      // Do something with the dataArray (e.g., display it, manipulate it, etc.)
-      Chart.defaults.font.size = 3;
-      dataPlot = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: dsAndFs.Ds.data,
-          datasets: [{
-            label: 'Dysfluent',
-            data: dsAndFs.Ds.occuerance,
-            borderWidth: 1,
-            borderColor: "#3e95cd"
-          }]
-        },
-        options: {
-          plugins: {
-            title: {
-              display: true,
-              text: 'Custom Chart Title',
-              font: {
-                size: 24 // Title font size
-              }
-            },
-            legend: {
-              labels: {
-                // This more specific font property overrides the global property
-                font: {
-                  size: 50,
-                  weight: 'bolder'
-                }
-              }
-            }
-          },
-          tension: 0.4,
-          animation: {
-            duration: 0
-          },
-          scales: {
-            y: {
-              title: {
-                display: true,
-                text: 'Frequency',
-                font: { size: 50 }
-              }
-            },
-            x: {
-              title: {
-                display: true,
-                text: 'syllable time (s)'
-              }
-            }
-          }
-        }
-      });
+//       // Do something with the dataArray (e.g., display it, manipulate it, etc.)
+//       Chart.defaults.font.size = 3;
+//       dataPlot = new Chart(ctx, {
+//         type: 'bar',
+//         data: {
+//           labels: dsAndFs.Ds.data,
+//           datasets: [{
+//             label: 'Dysfluent',
+//             data: dsAndFs.Ds.occuerance,
+//             borderWidth: 1,
+//             borderColor: "#3e95cd"
+//           }]
+//         },
+//         options: {
+//           plugins: {
+//             title: {
+//               display: true,
+//               text: 'Custom Chart Title',
+//               font: {
+//                 size: 24 // Title font size
+//               }
+//             },
+//             legend: {
+//               labels: {
+//                 // This more specific font property overrides the global property
+//                 font: {
+//                   size: 50,
+//                   weight: 'bolder'
+//                 }
+//               }
+//             }
+//           },
+//           tension: 0.4,
+//           animation: {
+//             duration: 0
+//           },
+//           scales: {
+//             y: {
+//               title: {
+//                 display: true,
+//                 text: 'Frequency',
+//                 font: { size: 50 }
+//               }
+//             },
+//             x: {
+//               title: {
+//                 display: true,
+//                 text: 'syllable time (s)'
+//               }
+//             }
+//           }
+//         }
+//       });
 
-      dataPlot1 = new Chart(ctx1, {
-        type: 'bar',
-        data: {
-          labels: dsAndFs.Fs.data,
-          datasets: [{
-            label: 'Fluent',
-            data: dsAndFs.Fs.occuerance,
-            borderWidth: 1,
-            borderColor: "#3e95cd"
-          }]
-        },
-        options: {
-          tension: 0.4,
-          animation: {
-            duration: 0
-          },
-          scales: {
-            y: {
-              title: {
-                display: true,
-                text: 'Frequency'
-              }
-            },
-            x: {
-              title: {
-                display: true,
-                text: 'syllable time (s)'
-              }
-            }
-          }
-        }
-      });
+//       dataPlot1 = new Chart(ctx1, {
+//         type: 'bar',
+//         data: {
+//           labels: dsAndFs.Fs.data,
+//           datasets: [{
+//             label: 'Fluent',
+//             data: dsAndFs.Fs.occuerance,
+//             borderWidth: 1,
+//             borderColor: "#3e95cd"
+//           }]
+//         },
+//         options: {
+//           tension: 0.4,
+//           animation: {
+//             duration: 0
+//           },
+//           scales: {
+//             y: {
+//               title: {
+//                 display: true,
+//                 text: 'Frequency'
+//               }
+//             },
+//             x: {
+//               title: {
+//                 display: true,
+//                 text: 'syllable time (s)'
+//               }
+//             }
+//           }
+//         }
+//       });
 
-      const numsAndRatios = getNumsAndRatios(dsAndFs);
-      dNumCell.innerText = numsAndRatios.numOfDs;
-      fNumCell.innerText = numsAndRatios.numOfFs;
-      dRatioCell.innerText = numsAndRatios.dRatio + " %";
-      fRatioCell.innerText = numsAndRatios.fRatio + " %";
-      dAvgTime.innerText = Math.round(numsAndRatios.dAvgTime * 100) / 100;
-      fAvgTime.innerText = Math.round(numsAndRatios.fAvgTime * 100) / 100;
-      recodringLenth.innerText = Math.round(recordingLength * 100) / 100;
-      sylPerMins.innerText = Math.round(numberOfSylablesPerMinute * 100) / 100;
-      fSylPerMins.innerText = Math.round(numberOfFSylablesPerMinute * 100) / 100;
-      dSylPerMin.innerText = Math.round(numberOfDSylablesPerMinute * 100) / 100;
-      console.log(inefficientSpeechScore, efficientSpeechScore)
-      inefficientSpeechScoreHtml.innerText = (Math.round(inefficientSpeechScore * 100) / 100) + ' %';
-      efficientSpeechScoreHtml.innerText = (Math.round(efficientSpeechScore * 100) / 100) + ' %';
-      console.log(meanStutteringDuration)
-      meanStutteringDurationHtml.innerText = Math.round(meanStutteringDuration * 100) / 100;
-    };
-
-
+//       const numsAndRatios = getNumsAndRatios(dsAndFs);
+//       dNumCell.innerText = numsAndRatios.numOfDs;
+//       fNumCell.innerText = numsAndRatios.numOfFs;
+//       dRatioCell.innerText = numsAndRatios.dRatio + " %";
+//       fRatioCell.innerText = numsAndRatios.fRatio + " %";
+//       dAvgTime.innerText = Math.round(numsAndRatios.dAvgTime * 100) / 100;
+//       fAvgTime.innerText = Math.round(numsAndRatios.fAvgTime * 100) / 100;
+//       recodringLenth.innerText = Math.round(recordingLength * 100) / 100;
+//       sylPerMins.innerText = Math.round(numberOfSylablesPerMinute * 100) / 100;
+//       fSylPerMins.innerText = Math.round(numberOfFSylablesPerMinute * 100) / 100;
+//       dSylPerMin.innerText = Math.round(numberOfDSylablesPerMinute * 100) / 100;
+//       console.log(inefficientSpeechScore, efficientSpeechScore)
+//       inefficientSpeechScoreHtml.innerText = (Math.round(inefficientSpeechScore * 100) / 100) + ' %';
+//       efficientSpeechScoreHtml.innerText = (Math.round(efficientSpeechScore * 100) / 100) + ' %';
+//       console.log(meanStutteringDuration)
+//       meanStutteringDurationHtml.innerText = Math.round(meanStutteringDuration * 100) / 100;
+//     };
 
 
-    reader.readAsText(file);
-  }
-}
+
+
+//     reader.readAsText(file);
+//   }
+// }
 
 function parseCSV(csvData) {
   const lines = csvData.split('\r\n');
