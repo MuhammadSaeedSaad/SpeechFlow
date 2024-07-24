@@ -65,7 +65,7 @@ function handleFileSelect(event, { filePath, data }) {
   let numberOfFSylablesPerMinute = ((dsAndFs.Fs.labels.length * 2) / recordingLength) * 30;
   let numberOfDSylablesPerMinute = ((dsAndFs.Ds.labels.length * 2) / recordingLength) * 30;
 
-  Chart.defaults.font.size = 15;
+  // Chart.defaults.font.size = 15;
   // Do something with the dataArray (e.g., display it, manipulate it, etc.)
   dataPlot = new Chart(ctx, {
     type: 'bar',
@@ -80,26 +80,28 @@ function handleFileSelect(event, { filePath, data }) {
       }]
     },
     options: {
+      // aspectRatio: 1.5,
+      responsive: true,
       tension: 0.4,
       animation: {
         duration: 0
       },
-      title: {
-        display: true,
-        text: 'Custom Chart Title',
-        font: {
-          size: 18 // Title font size
-        }
-      },
-      legend: {
-        labels: {
-          display: true,
-          // This more specific font property overrides the global property
-          font: {
-            size: 40,
-          }
-        }
-      },
+      // title: {
+      //   display: true,
+      //   text: 'Custom Chart Title',
+      //   font: {
+      //     size: 18 // Title font size
+      //   }
+      // },
+      // legend: {
+      //   labels: {
+      //     display: true,
+      //     // This more specific font property overrides the global property
+      //     font: {
+      //       size: 40,
+      //     }
+      //   }
+      // },
       scales: {
         y: {
           title: {
@@ -130,17 +132,19 @@ function handleFileSelect(event, { filePath, data }) {
       }]
     },
     options: {
+      // aspectRatio: 1.5,
+      responsive: true,
       tension: 0.4,
       animation: {
         duration: 0
       },
-      title: {
-        display: true,
-        text: 'Custom Chart Title',
-        font: {
-          size: 18 // Title font size
-        }
-      },
+      // title: {
+      //   display: true,
+      //   text: 'Custom Chart Title',
+      //   font: {
+      //     size: 18 // Title font size
+      //   }
+      // },
       scales: {
         y: {
           title: {
